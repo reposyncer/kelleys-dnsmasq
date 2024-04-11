@@ -2,9 +2,10 @@
 > [!NOTE]\
 > This is a mirror of the dnsmasq repository found [here.](https://thekelleys.org.uk/gitweb/?p=dnsmasq.git;a=summary)
 
-This repository is a mirror of the official `dnsmasq` repository for ease of access and development.
+> [!NOTE]\
+> No contributions will be accepted into this repository for this is just a mirror of the upstream repository.
 
-No contributions will be accepted into this repository for this is just a mirror of the upstream repository.
+This repository is a mirror of the official `dnsmasq` repository for ease of access and development.
 
 ## Download
 
