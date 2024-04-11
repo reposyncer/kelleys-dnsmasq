@@ -4,6 +4,8 @@
 
 This repository is a mirror of the official `dnsmasq` repository for ease of access and development.
 
+No contributions will be accepted into this repository for this is just a mirror of the upstream repository.
+
 ## Download
 
 You can clone this repo 3 ways:
