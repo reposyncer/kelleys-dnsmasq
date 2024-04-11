@@ -8,7 +8,7 @@ This repository is a mirror of the official `dnsmasq` repository for ease of acc
 
 You can clone this repo 3 ways:
 
-### RECOMMENDED (Official Repo)
+##### RECOMMENDED (Official Repo)
 ```bash
 git clone git://thekelleys.org.uk/dnsmasq.git
 ```
@@ -19,7 +19,7 @@ OR
 git clone http://thekelleys.org.uk/git/dnsmasq.git
 ```
 
-### THIS REPO
+##### THIS REPO
 ```bash
 git clone https://github.com/WolfTheDeveloper/dnsmasq-mirror.git
 ```
