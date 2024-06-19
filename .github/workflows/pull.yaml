@@ -30,4 +30,6 @@ jobs:
       with:
         title: 'Update from dnsmasq'
         branch: 'dnsmasq-update'
+        base: 'main'
         body: 'This PR includes the latest changes from the dnsmasq repository.'
+        token: ${{ secrets.GITHUB_TOKEN }}
