@@ -13,6 +13,11 @@ jobs:
     - name: Checkout repository
       uses: actions/checkout@v2
 
+    - name: Set Git Configurations
+      run: |
+        git config user.name "GitHub Actions"
+        git config user.email "actions@github.com"
+
     - name: Fetch latest changes
       run: |
         git remote add dnsmasq git://thekelleys.org.uk/dnsmasq.git
