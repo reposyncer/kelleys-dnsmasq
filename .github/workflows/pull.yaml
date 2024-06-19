@@ -1,0 +1,27 @@
+name: Fetch latest dnsmasq changes
+
+on:
+  schedule:
+    - cron: '0 0 * * 1'  # This will run at 00:00 UTC every Monday
+
+jobs:
+  fetch-changes:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v2
+
+    - name: Fetch latest changes
+      run: |
+        git remote add dnsmasq git://thekelleys.org.uk/dnsmasq.git
+        git fetch dnsmasq
+        git checkout -b dnsmasq-update
+        git merge dnsmasq/master
+
+    - name: Create Pull Request
+      uses: peter-evans/create-pull-request@v3
+      with:
+        title: 'Update from dnsmasq'
+        branch: 'dnsmasq-update'
+        body: 'This PR includes the latest changes from the dnsmasq repository.'
