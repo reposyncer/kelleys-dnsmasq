@@ -26,6 +26,7 @@ jobs:
         git branch -D dnsmasq-update || true
         git checkout -b dnsmasq-update
         git merge --allow-unrelated-histories dnsmasq/master
+        git push origin dnsmasq-update
 
     - name: Create Pull Request
       uses: peter-evans/create-pull-request@v3
