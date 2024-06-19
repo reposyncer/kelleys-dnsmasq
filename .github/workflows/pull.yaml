@@ -26,7 +26,15 @@ jobs:
         git branch -D dnsmasq-update || true
         git checkout -b dnsmasq-update
         git merge --allow-unrelated-histories dnsmasq/master
-        git push origin dnsmasq-update
+
+    - name: Check for changes
+      id: changes
+      run: |
+        git diff --quiet && echo "No changes" || echo "::set-output name=changes::true"
+    
+    - name: Push changes
+      run: git push origin dnsmasq-update
+      if: steps.changes.outputs.changes == 'true'
 
     - name: Create Pull Request
       uses: peter-evans/create-pull-request@v3
@@ -36,3 +44,22 @@ jobs:
         base: 'main'
         body: 'This PR includes the latest changes from the dnsmasq repository.'
         token: ${{ secrets.GITHUB_TOKEN }}
+      if: steps.changes.outputs.changes == 'true'
+    
+    - name: Request Review
+      uses: actions/github-script@v3
+      with:
+        github-token: ${{ secrets.GITHUB_TOKEN }}
+        script: |
+          const { data: pullRequest } = await github.pulls.get({
+            owner: context.repo.owner,
+            repo: context.repo.repo,
+            pull_number: context.payload.pull_request.number
+          });
+          await github.pulls.requestReviewers({
+            owner: context.repo.owner,
+            repo: context.repo.repo,
+            pull_number: context.payload.pull_request.number,
+            reviewers: ['zanderlewis']
+          });
+      if: steps.changes.outputs.changes == 'true'
