@@ -37,6 +37,7 @@ jobs:
       if: steps.changes.outputs.changes == 'true'
 
     - name: Create Pull Request
+      id: create_pr
       uses: peter-evans/create-pull-request@v3
       with:
         title: 'Update from dnsmasq'
@@ -51,15 +52,18 @@ jobs:
       with:
         github-token: ${{ secrets.GITHUB_TOKEN }}
         script: |
-          const { data: pullRequest } = await github.pulls.get({
+          const pr = await github.pulls.list({
             owner: context.repo.owner,
             repo: context.repo.repo,
-            pull_number: context.payload.pull_request.number
+            state: 'open',
+            head: context.repo.owner + ':dnsmasq-update'
           });
-          await github.pulls.requestReviewers({
-            owner: context.repo.owner,
-            repo: context.repo.repo,
-            pull_number: context.payload.pull_request.number,
-            reviewers: ['zanderlewis']
-          });
+          if (pr.data.length > 0) {
+            await github.pulls.requestReviewers({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              pull_number: pr.data[0].number,
+              reviewers: ['zanderlewis']
+            });
+          }
       if: steps.changes.outputs.changes == 'true'
