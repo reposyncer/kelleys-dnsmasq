@@ -26,17 +26,12 @@ jobs:
         git checkout main
         git merge --allow-unrelated-histories dnsmasq/master
 
-    - name: Check for changes
-      id: changes
+    - name: Commit and push changes
       run: |
-        git diff --quiet && echo "No changes" || echo "::set-output name=changes::true"
-
-    - name: Commit changes
-      if: steps.changes.outputs.changes == 'true'
-      run: |
-        git add -A
-        git commit -m "Update from dnsmasq repository"
-
-    - name: Push changes
-      if: steps.changes.outputs.changes == 'true'
-      run: git push origin main
+        if ! git diff --quiet; then
+          git add -A
+          git commit -m "Update from dnsmasq repository"
+          git push origin main
+        else
+          echo "No changes"
+        fi
