@@ -15,7 +15,7 @@ jobs:
 
     - name: Set Git Configurations
       run: |
-        git config user.name "GitHub Actions"
+        git config user.name "github-actions[bot]"
         git config user.email "actions@github.com"
 
     - name: Fetch latest changes
@@ -23,47 +23,19 @@ jobs:
         git remote add dnsmasq git://thekelleys.org.uk/dnsmasq.git
         git fetch dnsmasq
         git checkout main
-        git branch -D dnsmasq-update || true
-        git checkout -b dnsmasq-update
         git merge --allow-unrelated-histories dnsmasq/master
 
     - name: Check for changes
       id: changes
       run: |
         git diff --quiet && echo "No changes" || echo "::set-output name=changes::true"
-    
-    - name: Push changes
-      run: git push origin dnsmasq-update
-      if: steps.changes.outputs.changes == 'true'
 
-    - name: Create Pull Request
-      id: create_pr
-      uses: peter-evans/create-pull-request@v3
-      with:
-        title: 'Update from dnsmasq'
-        branch: 'dnsmasq-update'
-        base: 'main'
-        body: 'This PR includes the latest changes from the dnsmasq repository.'
-        token: ${{ secrets.GITHUB_TOKEN }}
+    - name: Commit changes
       if: steps.changes.outputs.changes == 'true'
-    
-    - name: Request Review
-      uses: actions/github-script@v3
-      with:
-        github-token: ${{ secrets.GITHUB_TOKEN }}
-        script: |
-          const pr = await github.pulls.list({
-            owner: context.repo.owner,
-            repo: context.repo.repo,
-            state: 'open',
-            head: context.repo.owner + ':dnsmasq-update'
-          });
-          if (pr.data.length > 0) {
-            await github.pulls.requestReviewers({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              pull_number: pr.data[0].number,
-              reviewers: ['zanderlewis']
-            });
-          }
+      run: |
+        git add -A
+        git commit -m "Update from dnsmasq repository"
+
+    - name: Push changes
       if: steps.changes.outputs.changes == 'true'
+      run: git push origin main
