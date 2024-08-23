@@ -21,8 +21,9 @@ jobs:
     - name: Fetch latest changes
       run: |
         git remote add dnsmasq git://thekelleys.org.uk/dnsmasq.git
-        git fetch dnsmasq --tags
-        git fetch dnsmasq +refs/heads/*:refs/remotes/dnsmasq/*
+        git fetch dnsmasq
+        git fetch dnsmasq 'refs/tags/*:refs/tags/*'
+        git fetch dnsmasq '+refs/heads/*:refs/remotes/dnsmasq/*'
         git checkout main
         git merge --allow-unrelated-histories dnsmasq/master
 
