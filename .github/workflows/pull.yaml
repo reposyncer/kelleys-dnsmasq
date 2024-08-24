@@ -29,6 +29,6 @@ jobs:
     - name: Push all branches and tags to origin
       run: |
         for branch in $(git branch -r | grep 'dnsmasq/' | sed 's/dnsmasq\///'); do
-          git push origin dnsmasq/$branch:refs/heads/$branch
+          git push origin dnsmasq/$branch:refs/heads/$branch --force
         done
-        git push --tags
+        git push --tags --force
