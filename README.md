@@ -5,6 +5,9 @@
 > [!NOTE]\
 > No contributions will be accepted into this repository for this is just a mirror of the upstream repository.
 
+> [!INFO]\
+> Latest code is on the `master` branch.
+
 This repository is a mirror of the official `dnsmasq` repository for ease of access and development.
 
 ## Download
