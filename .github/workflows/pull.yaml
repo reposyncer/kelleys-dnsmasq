@@ -1,8 +1,8 @@
-name: Sync dnsmasq repository
+name: Sync repository
 
 on:
   schedule:
-    - cron: '0 0 * * *'  # This will run at 00:00 UTC every Monday
+    - cron: '0 0 * * *'  # This will run at 00:00 UTC every day
   workflow_dispatch:  # This allows the workflow to be manually triggered
 
 jobs:
@@ -10,25 +10,8 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout repository
-      uses: actions/checkout@v2
+    - name: Sync repository
+      uses: reposyncer/reposync@v2
       with:
-        fetch-depth: 0  # Fetch all history for all branches and tags
-
-    - name: Set Git Configurations
-      run: |
-        git config user.name "GitHub Actions"
-        git config user.email "actions@github.com"
-
-    - name: Add dnsmasq remote and fetch all branches and tags
-      run: |
-        git remote add dnsmasq git://thekelleys.org.uk/dnsmasq.git
-        git fetch dnsmasq --tags
-        git fetch dnsmasq '+refs/heads/*:refs/remotes/dnsmasq/*'
-
-    - name: Push all branches and tags to origin
-      run: |
-        for branch in $(git branch -r | grep 'dnsmasq/' | sed 's/dnsmasq\///'); do
-          git push origin dnsmasq/$branch:refs/heads/$branch --force
-        done
-        git push --tags --force
+        name: kelleys-dnsmasq
+        url: git://thekelleys.org.uk/dnsmasq.git
